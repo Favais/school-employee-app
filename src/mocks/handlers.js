@@ -29,7 +29,15 @@ export const handlers = [
 
 
         if (isMatch) {
-            const token = await new SignJWT({ staffId: user.staffId })
+            const token = await new SignJWT({
+                id: user.id,
+                staffId: user.staffId,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role,
+                email: user.email,
+                department: user.department
+            })
                 .setProtectedHeader({ alg: 'HS256' })
                 .setExpirationTime('2h')
                 .sign(SECRET)

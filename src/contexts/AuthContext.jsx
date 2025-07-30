@@ -10,6 +10,15 @@ const AuthContextProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('authToken'))
     const [user, setUser] = useState(() => {
         const storedToken = localStorage.getItem('authToken')
+        if (storedToken) {
+            try {
+                return jwtDecode(storedToken)
+            } catch (error) {
+                localStorage.removeItem('authToken')
+                return null
+            }
+        }
+        return null
     })
     const navigate = useNavigate()
 
