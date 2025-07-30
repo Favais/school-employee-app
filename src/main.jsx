@@ -4,7 +4,12 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
+import AuthContextProvider, { AuthContext } from './contexts/AuthContext.jsx'
 
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = await import('./mocks/node.js')
+  await worker.start()
+}
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
@@ -26,7 +31,9 @@ createRoot(document.getElementById('root')).render(
         },
       }}
       >
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </ConfigProvider>
     </BrowserRouter>
 

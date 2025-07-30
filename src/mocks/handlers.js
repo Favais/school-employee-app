@@ -1,0 +1,56 @@
+import { http, HttpResponse } from 'msw'
+import { jwtVerify, SignJWT } from 'jose'
+import { db } from './db'
+import bcrypt from 'bcryptjs'
+import { useState } from 'react'
+
+const SECRET = new TextEncoder().encode('sankara') // convert string to Uint8Array
+
+
+export const handlers = [
+    http.get('/api/users', () => {
+        return HttpResponse.json(db)
+    }),
+
+    http.post('/api/login', async ({ request }) => {
+        const { staffId, password } = await request.json()
+
+        const user = db.users.find((u) => (
+            u.staffId === staffId
+        ))
+        if (!user) {
+            return HttpResponse.json({ message: 'User not found' }, { status: 401 })
+
+        }
+
+        // const hasedPassword = await bcrypt.hash(body.password, 10)
+        const isMatch = await bcrypt.compare(password, user.password)
+
+
+
+        if (isMatch) {
+            const token = await new SignJWT({ staffId: user.staffId })
+                .setProtectedHeader({ alg: 'HS256' })
+                .setExpirationTime('2h')
+                .sign(SECRET)
+
+
+            const safeUser = {
+                id: user.id,
+                staffId: user.staffId,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role,
+                email: user.email,
+                department: user.department
+                // Add other non-sensitive fields you need
+            }
+
+
+            return HttpResponse.json({ token, safeUser })
+
+        }
+
+        return new HttpResponse('Unauthorized', { status: 401 })
+    }),
+]
