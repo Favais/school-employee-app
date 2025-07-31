@@ -8,32 +8,60 @@ export const AuthContext = createContext()
 
 const AuthContextProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('authToken'))
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false)
     const [user, setUser] = useState(() => {
-        const storedToken = localStorage.getItem('authToken')
-        if (storedToken) {
+        if (token) {
+            return jwtDecode(token)
+        } else
+            return null
+    })
+
+    const navigate = useNavigate()
+
+    const getUser = async () => {
+        if (user) {
             try {
-                return jwtDecode(storedToken)
+                setIsAuthenticated(true)
+                if (user && user.role === 'admin') {
+                    setIsAdmin(true)
+                } else {
+                    setIsAdmin(false)
+                }
             } catch (error) {
-                localStorage.removeItem('authToken')
+                console.log(error.message);
+
+                // localStorage.removeItem('authToken')
                 return null
             }
         }
         return null
-    })
-    const navigate = useNavigate()
+    }
 
-    const getUser = async () => {
-        const userDetails = jwtDecode(token)
-        console.log(user);
-
+    const logoutUser = () => {
+        localStorage.removeItem('authToken')
+        setToken(null)
+        setUser(null)
+        // delete axios.defaults.headers.common['Authorization']
+        navigate('/login')
     }
 
     useEffect(() => {
         getUser()
 
-    }, [])
+    }, [token])
+
+    useEffect(() => {
+
+    }, [user])
+
+    console.log(user);
+    console.log(isAdmin);
+    console.log(isAuthenticated);
+
+
     const value = {
-        token, setToken, setUser, navigate
+        token, user, setToken, setUser, navigate, logoutUser, setIsAdmin
     }
     return (
         <AuthContext.Provider value={value}>

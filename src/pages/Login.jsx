@@ -1,32 +1,34 @@
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Spin, App } from 'antd'
 import Password from 'antd/es/input/Password'
 // import { Button } from 'antd/es/radio'
 import React, { useContext, useEffect, useState } from 'react'
 import { BiLock } from 'react-icons/bi'
-import { BsPass } from 'react-icons/bs'
 import { FaUser } from 'react-icons/fa'
 import { getUsers } from '../api'
 import axios from 'axios'
-import { jwtDecode } from 'jwt-decode'
 import { AuthContext } from '../contexts/AuthContext'
 
 
 const Login = () => {
+    const [loading, setLoading] = useState(false)
+    const { token, setToken, setUser, navigate, setIsAdmin } = useContext(AuthContext)
 
-    const { token, setToken, setUser, navigate } = useContext(AuthContext)
-
+    const { message, modal, notification } = App.useApp();
     const onFinish = async data => {
         console.log('Success:', data);
         try {
+            setLoading(true)
             const res = await axios.post('/api/login', { ...data })
             setToken(res.data.token)
             localStorage.setItem('authToken', res.data.token)
-            if (res.data.safeUser) {
-                setUser(res.data.safeUser)
-            }
+            message.success('Login Succesful')
         } catch (error) {
             console.log(error.message);
-
+            message.error(
+                error.message || 'Login failed. Please try again.'
+            )
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -36,7 +38,7 @@ const Login = () => {
 
     useEffect(() => {
         if (token) {
-            // navigate('/')
+            navigate('/')
         }
     }, [token])
     return (
@@ -45,34 +47,36 @@ const Login = () => {
             <div className='bg-white rounded-lg'>
                 <div className='py-10 px-16 flex flex-col items-center'>
                     <p className='mb-7 text-2xl'>Management Only</p>
-                    <Form
-                        name='login'
-                        initialValues={{ remember: true }}
-                        style={{ width: 300 }}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-
-                    >
-                        <Form.Item
-                            name='staffId'
-                            rules={[{ required: true, message: 'Staff ID is missing' }]}
+                    <Spin spinning={loading}>
+                        <Form
+                            name='login'
+                            initialValues={{ remember: true }}
+                            style={{ width: 300 }}
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                            onLoad={() => <div>Loading</div>}
                         >
-                            <Input type='text' className='!px-3 !py-3' width={'20px'} prefix={<FaUser />} placeholder='Staff ID' />
-                        </Form.Item>
-                        <Form.Item
-                            name='password'
-                            rules={[{ required: true, message: 'Password cant be empty' }]}
-                        >
-                            <Input className='!px-3 !py-3' prefix={<BiLock />} type='password' placeholder='Password' />
-                        </Form.Item>
+                            <Form.Item
+                                name='staffId'
+                                rules={[{ required: true, message: 'Staff ID is missing' }]}
+                            >
+                                <Input type='text' className='!px-3 !py-3' width={'20px'} prefix={<FaUser />} placeholder='Staff ID' />
+                            </Form.Item>
+                            <Form.Item
+                                name='password'
+                                rules={[{ required: true, message: 'Password cant be empty' }]}
+                            >
+                                <Input className='!px-3 !py-3' prefix={<BiLock />} type='password' placeholder='Password' />
+                            </Form.Item>
 
-                        <Form.Item>
-                            <Button className='!py-6' block color='default' variant='solid' htmlType="submit">
-                                Log in
-                            </Button>
-                            or <a href="">Register now!</a>
-                        </Form.Item>
-                    </Form>
+                            <Form.Item>
+                                <Button className='!py-6' block color='default' variant='solid' htmlType="submit">
+                                    Log in
+                                </Button>
+                                or <a href="">Register now!</a>
+                            </Form.Item>
+                        </Form>
+                    </Spin>
                 </div>
             </div>
         </div>

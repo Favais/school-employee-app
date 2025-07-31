@@ -8,6 +8,7 @@ import Employees from './pages/Employees'
 import Leaves from './pages/Leaves'
 import MainLayout from './layouts/MainLayout'
 import Login from './pages/Login'
+import PrivateRoute from './routes/PrivateRoute'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,7 +20,12 @@ function App() {
         <Route path='/login' element={<Login />} />
 
         {/* Protected route with layout */}
-        <Route path='' element={<MainLayout />}>
+        <Route path='/' element={
+          <PrivateRoute>
+            <MainLayout />
+          </PrivateRoute>
+        }
+        >
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/employees' element={<Employees />} />
           <Route path='/leaves' element={<Leaves />} />

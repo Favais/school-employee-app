@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import { Link, Outlet } from 'react-router-dom'
@@ -10,46 +10,63 @@ import { IoCameraOutline } from 'react-icons/io5';
 import { RiMenuUnfold2Line } from "react-icons/ri";
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import logo from "../assets/afriklogo.png"
+import { AuthContext } from '../contexts/AuthContext';
+import { BiLogOut } from 'react-icons/bi';
 
 
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState()
+    const { logoutUser } = useContext(AuthContext)
 
     return (
-        <Layout className='h-screen'>
-            <Sider collapsible collapsed={collapsed} className='w-screen'>
-                <div className='flex justify-center'>
-                    <img className='' src={logo} alt="" width={'100px'} />
-                </div>
-                <Menu
-                    theme="light"
-                    mode="inline"
-                    item
-                    style={{
-                        minHeight: '',
-                        color: '#'
-                    }}
-                    defaultSelectedKeys={['3']}
-                    items={[
-                        {
-                            key: '1',
-                            icon: <TiUserOutline />,
-                            label: <Link to={'/dashboard'}>Dashboard</Link>,
+        <Layout className='h-screen '>
+            <Sider
+                collapsible
+                collapsed={collapsed}
+                className='w-screen'
+                style={{ backgroundColor: 'ffffff' }}
+                trigger={null}
+            >
+                <div className='flex flex-col h-full'>
+                    <div className='flex justify-center'>
+                        <img className='' src={logo} alt="" width={'100px'} />
+                    </div>
+                    <Menu
+                        theme="light"
+                        mode="inline"
+                        style={{
+                            minHeight: '',
+                            color: '#'
+                        }}
+                        defaultSelectedKeys={['3']}
+                        items={[
+                            {
+                                key: '1',
+                                icon: <TiUserOutline size={'20'} />,
+                                label: <Link to={'/dashboard'}>Dashboard</Link>,
 
-                        },
-                        {
-                            key: '2',
-                            icon: <IoCameraOutline />,
-                            label: <Link to={'/employees'}>Employees</Link>,
-                        },
-                        {
-                            key: '3',
-                            icon: <TiUploadOutline />,
-                            label: <Link to={'/leaves'}>Leave</Link>,
-                        },
-                    ]}
-                />
+                            },
+                            {
+                                key: '2',
+                                icon: <IoCameraOutline size={'20'} />,
+                                label: <Link to={'/employees'}>Employees</Link>,
+                            },
+                            {
+                                key: '3',
+                                icon: <TiUploadOutline size={'20'} />,
+                                label: <Link to={'/leaves'}>Leave</Link>,
+                            },
+                        ]}
+                    />
+                    <div className='flex-1' />
+                    <div className='p-5 flex justify-center'>
+                        <Button onClick={logoutUser} color="danger" variant='solid' size='large'>
+                            <BiLogOut />
+                            {!collapsed && <span>Logout</span>}
+                        </Button>
+                    </div>
+                </div>
             </Sider>
 
             <Layout>
