@@ -3,13 +3,40 @@ import { jwtVerify, SignJWT } from 'jose'
 import { db } from './db'
 import bcrypt from 'bcryptjs'
 import { useState } from 'react'
+import { message } from 'antd'
 
 const SECRET = new TextEncoder().encode('sankara') // convert string to Uint8Array
 
 
 export const handlers = [
-    http.get('/api/users', () => {
+    http.get('/api/employees', () => {
         return HttpResponse.json(db)
+    }),
+
+    http.post('/api/employees', async ({ request }) => {
+        try {
+
+            const formData = await request.json()
+            console.log(formData);
+
+            const newEmployee = {
+                id: Date.now().toString(),
+                ...formData,
+                createdAt: new Date().toISOString()
+            }
+            db.users.push(newEmployee)
+            console.log(db);
+
+            return HttpResponse.json(
+                { success: true, message: 'Employee added successfully' }
+            )
+        } catch (error) {
+            return HttpResponse.json(
+                { message: 'Failed' }
+            )
+        }
+
+
     }),
 
     http.post('/api/login', async ({ request }) => {
@@ -36,7 +63,10 @@ export const handlers = [
                 lastName: user.lastName,
                 role: user.role,
                 email: user.email,
-                department: user.department
+                department: user.department,
+                status: user.status,
+                phone: user.phone,
+                gender: user.gender
             })
                 .setProtectedHeader({ alg: 'HS256' })
                 .setExpirationTime('2h')
@@ -50,7 +80,10 @@ export const handlers = [
                 lastName: user.lastName,
                 role: user.role,
                 email: user.email,
-                department: user.department
+                department: user.department,
+                status: user.status,
+                phone: user.phone,
+                gender: user.gender
                 // Add other non-sensitive fields you need
             }
 

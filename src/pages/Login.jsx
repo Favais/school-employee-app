@@ -1,6 +1,5 @@
 import { Form, Input, Button, Spin, App } from 'antd'
 import Password from 'antd/es/input/Password'
-// import { Button } from 'antd/es/radio'
 import React, { useContext, useEffect, useState } from 'react'
 import { BiLock } from 'react-icons/bi'
 import { FaUser } from 'react-icons/fa'
@@ -13,7 +12,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false)
     const { token, setToken, setUser, navigate, setIsAdmin } = useContext(AuthContext)
 
-    const { message, modal, notification } = App.useApp();
+    const { message } = App.useApp();
     const onFinish = async data => {
         console.log('Success:', data);
         try {

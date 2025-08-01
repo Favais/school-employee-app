@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
-import { Link, Outlet } from 'react-router-dom'
-import { Button, Layout, Menu } from "antd";
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Button, Col, DatePicker, Drawer, Form, Input, Layout, Menu, Row, Select, Space } from "antd";
 import Sider from 'antd/es/layout/Sider';
 import { Content, Header } from 'antd/es/layout/layout';
 import { TiUploadOutline, TiUserOutline } from 'react-icons/ti';
@@ -12,13 +12,43 @@ import { RiMenuUnfoldLine } from "react-icons/ri";
 import logo from "../assets/afriklogo.png"
 import { AuthContext } from '../contexts/AuthContext';
 import { BiLogOut } from 'react-icons/bi';
+import NewEmployee from '../components/NewEmployee';
 
 
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState()
+    const [open, setOpen] = useState(false);
     const { logoutUser } = useContext(AuthContext)
+    const location = useLocation()
 
+    const showDrawer = () => {
+        setOpen(true);
+    };
+    const onClose = () => {
+        setOpen(false);
+    };
+
+
+    const getHeaderTitle = () => {
+        switch (location.pathname) {
+            case '/employees':
+                return (
+                    <div className='flex justify-between items-center w-full px-4'>
+                        <h2>Employees</h2>
+                        <Button onClick={showDrawer} style={{ backgroundColor: 'darkgreen', color: 'white' }} size="large">
+                            Add New Employee
+                        </Button>
+                    </div>
+                )
+            case '/dashboard':
+                return <h2>Dashboard</h2>
+            case '/leaves':
+                return <h2>Leave Management</h2>
+            default:
+                return <h2>School Management</h2>
+        }
+    }
     return (
         <Layout className='h-screen '>
             <Sider
@@ -39,7 +69,7 @@ const MainLayout = () => {
                             minHeight: '',
                             color: '#'
                         }}
-                        defaultSelectedKeys={['3']}
+                        defaultSelectedKeys={['1']}
                         items={[
                             {
                                 key: '1',
@@ -81,14 +111,16 @@ const MainLayout = () => {
                             height: 64,
                         }}
                     />
-                    <h2>School Management</h2>
+                    {getHeaderTitle()}
                 </Header>
                 <Content style={{ margin: '16px', padding: '16px', background: '#fff' }}>
                     {/* This is where nested routes render */}
                     <Outlet />
                 </Content>
             </Layout>
+            <NewEmployee onClose={onClose} open={open} />
         </Layout>
+
         // <div className='flex'>
 
         //     <Sidebar />
