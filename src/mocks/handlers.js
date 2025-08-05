@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { jwtVerify, SignJWT } from 'jose'
-import { db } from './db'
+import { db, leaveRequests } from './db'
 import bcrypt from 'bcryptjs'
 import { useState } from 'react'
 import { message } from 'antd'
@@ -11,6 +11,10 @@ const SECRET = new TextEncoder().encode('sankara') // convert string to Uint8Arr
 export const handlers = [
     http.get('/api/employees', () => {
         return HttpResponse.json(db)
+    }),
+
+    http.get('/api/leaves', () => {
+        return HttpResponse.json(leaveRequests)
     }),
 
     http.post('/api/employees', async ({ request }) => {

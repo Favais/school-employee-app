@@ -11,6 +11,7 @@ const AuthContextProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false)
     const [allUsers, setAllUsers] = useState()
+    const [leaves, setLeaves] = useState()
     const [user, setUser] = useState(() => {
         if (token) {
             return jwtDecode(token)
@@ -61,14 +62,10 @@ const AuthContextProvider = ({ children }) => {
         getAllUsers()
     }, [isAdmin, user])
 
-    console.log(user);
-
-    console.log(isAdmin);
-    console.log(isAuthenticated);
 
 
     const value = {
-        token, user, setToken, setUser, navigate, logoutUser, setIsAdmin, isAdmin, allUsers
+        token, user, setToken, setUser, navigate, logoutUser, setIsAdmin, isAdmin, allUsers, leaves, setLeaves
     }
     return (
         <AuthContext.Provider value={value}>

@@ -43,7 +43,7 @@ const Employees = () => {
                 </div>
         },
         {
-            title: 'Sttus',
+            title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (_, tag) => {
