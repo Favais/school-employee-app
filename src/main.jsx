@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider, App as AntApp, message } from 'antd'
 import AuthContextProvider from './contexts/AuthContext.jsx'
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || REACT_APP_USE_MSW === 'true') {
   const { worker } = await import('./mocks/node.js')
   await worker.start()
 }
