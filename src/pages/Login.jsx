@@ -6,6 +6,7 @@ import { FaUser } from 'react-icons/fa'
 import { getUsers } from '../api'
 import axios from 'axios'
 import { AuthContext } from '../contexts/AuthContext'
+import { jwtDecode } from 'jwt-decode'
 
 
 const Login = () => {
@@ -19,10 +20,11 @@ const Login = () => {
             setLoading(true)
             const res = await axios.post('/api/login', { ...data })
             setToken(res.data.token)
+            setIsAdmin(true)
             localStorage.setItem('authToken', res.data.token)
             message.success('Login Succesful')
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             message.error(
                 error.message || 'Login failed. Please try again.'
             )
@@ -46,6 +48,11 @@ const Login = () => {
             <div className='bg-white rounded-lg'>
                 <div className='py-10 px-16 flex flex-col items-center'>
                     <p className='mb-7 text-2xl'>Management Only</p>
+                    <div style={{ marginBottom: 16, color: '#888' }}>
+                        <strong>Demo Login:</strong><br />
+                        Staff ID: <code>20250701</code><br />
+                        Password: <code>123</code>
+                    </div>
                     <Spin spinning={loading}>
                         <Form
                             name='login'

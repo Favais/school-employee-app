@@ -56,7 +56,7 @@ const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         getUser()
 
-    }, [token])
+    }, [token, user])
 
     useEffect(() => {
         getAllUsers()
