@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { App, Button, Space, Table, Tag } from 'antd';
-// import { IoIosCloseCircle } from 'react-icons/io';
-// import { CiCircleCheck } from 'react-icons/ci';
+import { IoIosCloseCircle } from 'react-icons/io';
+import { CiCircleCheck } from 'react-icons/ci';
 
 const LeaveRequests = () => {
     const { leaves, setLeaves } = useContext(AuthContext)
@@ -34,7 +34,6 @@ const LeaveRequests = () => {
 
 
     useEffect(() => {
-        console.log(leaves);
 
     }, [leaves])
     const column = [
@@ -81,7 +80,7 @@ const LeaveRequests = () => {
                     <Space size="small">
                         <Button
                             type="primary"
-                            // icon={<CiCircleCheck />}
+                            icon={<CiCircleCheck />}
                             onClick={() => handleApprove(record)}
                             size="small"
                             style={{ backgroundColor: 'green' }}
@@ -90,7 +89,7 @@ const LeaveRequests = () => {
                         </Button >
                         <Button
                             danger
-                            // icon={<IoIosCloseCircle />}
+                            icon={<IoIosCloseCircle />}
                             onClick={() => handleDecline(record)}
                             size="small"
                         >
