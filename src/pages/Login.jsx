@@ -20,7 +20,6 @@ const Login = () => {
             setLoading(true)
             const res = await axios.post('/api/login', { ...data })
             setToken(res.data.token)
-            setIsAdmin(true)
             localStorage.setItem('authToken', res.data.token)
             message.success('Login Succesful')
         } catch (error) {

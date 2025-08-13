@@ -103,6 +103,8 @@ export const leaveRequests = [
     {
         id: 1,
         staffId: 'STAFF001',
+        firstName: 'Alice',
+        lastName: 'Johnson',
         leaveType: 'Sick',
         startDate: '2025-07-10',
         endDate: '2025-07-12',
@@ -113,6 +115,8 @@ export const leaveRequests = [
     {
         id: 2,
         staffId: 'STAFF002',
+        firstName: 'Bob',
+        lastName: 'Smith',
         leaveType: 'Vacation',
         startDate: '2025-08-01',
         endDate: '2025-08-10',
@@ -123,6 +127,8 @@ export const leaveRequests = [
     {
         id: 3,
         staffId: 'STAFF003',
+        firstName: 'Carol',
+        lastName: 'Williams',
         leaveType: 'Sick',
         startDate: '2025-07-22',
         endDate: '2025-07-23',
@@ -133,6 +139,8 @@ export const leaveRequests = [
     {
         id: 4,
         staffId: 'STAFF004',
+        firstName: 'David',
+        lastName: 'Brown',
         leaveType: 'Vacation',
         startDate: '2025-09-01',
         endDate: '2025-09-15',
@@ -143,6 +151,8 @@ export const leaveRequests = [
     {
         id: 5,
         staffId: 'STAFF005',
+        firstName: 'Eva',
+        lastName: 'Davis',
         leaveType: 'Sick',
         startDate: '2025-07-28',
         endDate: '2025-07-29',
@@ -153,6 +163,8 @@ export const leaveRequests = [
     {
         id: 6,
         staffId: 'STAFF006',
+        firstName: 'Frank',
+        lastName: 'Miller',
         leaveType: 'Vacation',
         startDate: '2025-08-15',
         endDate: '2025-08-25',
@@ -163,6 +175,8 @@ export const leaveRequests = [
     {
         id: 7,
         staffId: 'STAFF007',
+        firstName: 'Grace',
+        lastName: 'Wilson',
         leaveType: 'Sick',
         startDate: '2025-07-05',
         endDate: '2025-07-07',
@@ -173,6 +187,8 @@ export const leaveRequests = [
     {
         id: 8,
         staffId: 'STAFF008',
+        firstName: 'Henry',
+        lastName: 'Moore',
         leaveType: 'Vacation',
         startDate: '2025-12-20',
         endDate: '2025-12-31',
@@ -183,6 +199,8 @@ export const leaveRequests = [
     {
         id: 9,
         staffId: 'STAFF009',
+        firstName: 'Ivy',
+        lastName: 'Taylor',
         leaveType: 'Sick',
         startDate: '2025-06-15',
         endDate: '2025-06-17',
@@ -193,6 +211,8 @@ export const leaveRequests = [
     {
         id: 10,
         staffId: 'STAFF010',
+        firstName: 'Jack',
+        lastName: 'Anderson',
         leaveType: 'Vacation',
         startDate: '2025-11-05',
         endDate: '2025-11-10',

@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { App, Button, Space, Table, Tag } from 'antd';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { CiCircleCheck } from 'react-icons/ci';
+import EmployeeDetails from '../pages/EmployeeDetails';
+import { Link } from 'react-router-dom';
 
 const LeaveRequests = () => {
     const { leaves, setLeaves } = useContext(AuthContext)
@@ -20,12 +22,31 @@ const LeaveRequests = () => {
         }
 
     }
-    const handleApprove = (record) => {
-        message.success(`Leave approved for `)
+    const handleApprove = async (record) => {
+
+        try {
+            const res = await axios.patch(`/api/leaves/${record.id}`, { status: 'approved' })
+            setLeaves((prevLeaves) => (
+                prevLeaves.map((leave) => leave.id === record.id ? { ...leave, status: 'approved' } : leave)
+            ))
+            message.success(`Leave approved for ${record.staffId}`)
+        } catch (error) {
+            console.log(error);
+
+        }
     }
 
-    const handleDecline = (record) => {
-        message.error(`Leave declined for `)
+    const handleDecline = async (record) => {
+        try {
+            const res = await axios.patch(`/api/leaves/${record.id}`, { status: 'rejected' })
+            setLeaves((prevLeaves) => (
+                prevLeaves.map((leave) => leave.id === record.id ? { ...leave, status: 'rejected' } : leave)
+            ))
+            message.error(`Leave declined for ${record.staffId}`)
+        } catch (error) {
+            console.log(error);
+
+        }
     }
 
     useEffect(() => {
@@ -41,6 +62,12 @@ const LeaveRequests = () => {
             title: 'Staff ID',
             dataIndex: 'staffId',
             key: 'staffId',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            render: (_, record) => <Link >{`${record.firstName} ${record.lastName}`}</Link>,
         },
         {
             title: 'Leave Type',
@@ -66,7 +93,8 @@ const LeaveRequests = () => {
                 return (
                     <Tag color={color}>
                         {tag.status}
-                    </Tag>)
+                    </Tag>
+                )
             }
         },
         {

@@ -1,10 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import UnAuthorized from '../components/UnAuthorized'
 import { Table, Tag } from 'antd'
+import { Link } from 'react-router-dom'
+import EmployeeDetails from './EmployeeDetails'
 
 const Employees = () => {
     const { isAdmin, allUsers } = useContext(AuthContext)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+
+    const showModal = (employee) => {
+        setSelectedEmployee(employee)
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     if (!isAdmin) {
         return <UnAuthorized />
@@ -19,7 +34,7 @@ const Employees = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => <a href="">{`${record.firstName} ${record.lastName}`}</a>,
+            render: (_, record) => <Link onClick={() => showModal(record)}>{`${record.firstName} ${record.lastName}`}</Link>,
         },
 
         {
@@ -63,6 +78,12 @@ const Employees = () => {
     return (
         <div>
             <Table columns={columns} dataSource={allUsers} />
+            {selectedEmployee && <EmployeeDetails
+                isModalOpen={isModalOpen}
+                handleOk={handleOk}
+                handleCancel={handleCancel}
+                employee={selectedEmployee}
+            />}
         </div>
     )
 }

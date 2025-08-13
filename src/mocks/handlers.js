@@ -17,6 +17,14 @@ export const handlers = [
         return HttpResponse.json(leaveRequests)
     }),
 
+    http.patch('/api/leaves/:id', async ({ params, request }) => {
+        const { id } = params;
+        const { status } = request.json()
+        const updatedLeave = leaveRequests.map(leave => leave.id === id ? { ...leave, status } : leave)
+
+        return HttpResponse.json({ message: 'Leave Updated', id, status })
+    }),
+
     http.post('/api/employees', async ({ request }) => {
         try {
 
