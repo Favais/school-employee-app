@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Button, Col, DatePicker, Drawer, Form, Input, Layout, Menu, Row, Select, Space } from "antd";
+import { Button, Col, DatePicker, Drawer, Form, Input, Layout, Menu, Row, Select, Space, Spin } from "antd";
 import Sider from 'antd/es/layout/Sider';
 import { Content, Header } from 'antd/es/layout/layout';
 import { TiUploadOutline, TiUserOutline } from 'react-icons/ti';
@@ -19,8 +19,43 @@ import NewEmployee from '../components/NewEmployee';
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState()
     const [open, setOpen] = useState(false);
-    const { logoutUser } = useContext(AuthContext)
+    const { logoutUser, user, isLoading, setIsLoading } = useContext(AuthContext)
     const location = useLocation()
+
+    if (!user) {
+        return (
+            <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh"
+            }}>
+                <Spin size="large" tip="Loading..." />
+            </div>
+        );
+    }
+
+    const menus = {
+        admin: [
+            { key: '1', icon: <TiUserOutline size={20} />, label: '/dashboard', text: 'Dashboard' },
+            { key: '2', icon: <IoCameraOutline size={20} />, label: '/employees', text: 'Employees' },
+            { key: '3', icon: <TiUploadOutline size={20} />, label: '/leaves', text: 'Leave' },
+        ],
+        manager: [
+            { key: '1', icon: <TiUserOutline size={20} />, label: '/dashboard', text: 'Dashboard' },
+            { key: '2', icon: <TiUploadOutline size={20} />, label: '/approvals', text: 'Approvals' },
+        ],
+        employee: [
+            { key: '1', icon: <TiUserOutline size={20} />, label: '/dashboard', text: 'Dashboard' },
+            { key: '2', icon: <TiUploadOutline size={20} />, label: '/leaves', text: 'My Leaves' },
+        ],
+    };
+
+    const menuItems = menus[user?.role].map(item => ({
+        key: item.key,
+        icon: item.icon,
+        label: <Link to={item.label}>{item.text}</Link>
+    }));
 
     const showDrawer = () => {
         setOpen(true);
@@ -49,6 +84,7 @@ const MainLayout = () => {
                 return <h2>School Management</h2>
         }
     }
+
     return (
         <Layout className='h-screen '>
             <Sider
@@ -70,24 +106,7 @@ const MainLayout = () => {
                             color: '#'
                         }}
                         defaultSelectedKeys={['1']}
-                        items={[
-                            {
-                                key: '1',
-                                icon: <TiUserOutline size={'20'} />,
-                                label: <Link to={'/dashboard'}>Dashboard</Link>,
-
-                            },
-                            {
-                                key: '2',
-                                icon: <IoCameraOutline size={'20'} />,
-                                label: <Link to={'/employees'}>Employees</Link>,
-                            },
-                            {
-                                key: '3',
-                                icon: <TiUploadOutline size={'20'} />,
-                                label: <Link to={'/leaves'}>Leave</Link>,
-                            },
-                        ]}
+                        items={menuItems}
                     />
                     <div className='flex-1' />
                     <div className='p-5 flex justify-center'>

@@ -15,6 +15,13 @@ export const db = {
             status: 'active',
             email: 'alice.turner@institution.edu',
             phone: '+1-555-101-1001',
+            leaves: [
+                { leaveId: 101, type: 'Annual', startDate: '2024-01-10', endDate: '2024-01-20', status: 'approved' },
+                { leaveId: 102, type: 'Sick', startDate: '2023-11-05', endDate: '2023-11-07', status: 'approved' },
+                { leaveId: 110, type: 'Unpaid', startDate: '2023-08-15', endDate: '2023-08-18', status: 'approved' },
+                { leaveId: 111, type: 'Annual', startDate: '2023-05-01', endDate: '2023-05-10', status: 'approved' },
+                { leaveId: 112, type: 'Sick', startDate: '2022-12-20', endDate: '2022-12-22', status: 'approved' },
+            ]
         },
         {
             id: 2,
@@ -31,6 +38,14 @@ export const db = {
             status: 'onLeave',
             email: 'brian.okafor@institution.edu',
             phone: '+1-555-102-2002',
+            leaves: [
+                { leaveId: 103, type: 'Sick', startDate: '2025-08-01', endDate: '2025-08-15', status: 'approved' },
+                { leaveId: 113, type: 'Annual', startDate: '2024-04-10', endDate: '2024-04-20', status: 'approved' },
+                { leaveId: 114, type: 'Sick', startDate: '2023-07-12', endDate: '2023-07-14', status: 'approved' },
+                { leaveId: 115, type: 'Unpaid', startDate: '2023-02-01', endDate: '2023-02-05', status: 'rejected' },
+                { leaveId: 116, type: 'Annual', startDate: '2022-11-15', endDate: '2022-11-22', status: 'approved' },
+                { leaveId: 117, type: 'Sick', startDate: '2022-06-10', endDate: '2022-06-12', status: 'approved' },
+            ]
         },
         {
             id: 3,
@@ -47,6 +62,12 @@ export const db = {
             status: 'active',
             email: 'clara.mensah@institution.edu',
             phone: '+1-555-103-3003',
+            leaves: [
+                { leaveId: 104, type: 'Annual', startDate: '2024-07-15', endDate: '2024-07-25', status: 'approved' },
+                { leaveId: 105, type: 'Unpaid', startDate: '2023-12-01', endDate: '2023-12-10', status: 'rejected' },
+                { leaveId: 118, type: 'Sick', startDate: '2023-03-10', endDate: '2023-03-12', status: 'approved' },
+                { leaveId: 119, type: 'Annual', startDate: '2022-09-05', endDate: '2022-09-15', status: 'approved' },
+            ]
         },
         {
             id: 4,
@@ -63,6 +84,9 @@ export const db = {
             status: 'terminated',
             email: 'david.ibrahim@institution.edu',
             phone: '+1-555-104-4004',
+            leaves: [
+                { leaveId: 106, type: 'Annual', startDate: '2024-03-10', endDate: '2024-03-15', status: 'approved' },
+            ]
         },
         {
             id: 5,
@@ -79,6 +103,9 @@ export const db = {
             status: 'active',
             email: 'esther.ngugi@institution.edu',
             phone: '+1-555-105-5005',
+            leaves: [
+                { leaveId: 107, type: 'Sick', startDate: '2025-06-01', endDate: '2025-06-05', status: 'approved' },
+            ]
         },
         {
             id: 6,
@@ -95,8 +122,13 @@ export const db = {
             status: 'active',
             email: 'femi.johnson@institution.edu',
             phone: '+1-555-106-6006',
+            leaves: [
+                { leaveId: 108, leaveType: 'Annual', startDate: '2024-09-01', endDate: '2024-09-10', status: 'approved' },
+                { leaveId: 109, leaveType: 'Sick', startDate: '2023-10-15', endDate: '2023-10-20', status: 'approved' },
+            ]
         },
     ]
+
 }
 
 export const leaveRequests = [

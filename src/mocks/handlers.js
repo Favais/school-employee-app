@@ -57,6 +57,8 @@ export const handlers = [
         const user = db.users.find((u) => (
             u.staffId === staffId
         ))
+        console.log(user);
+
         if (!user) {
             return HttpResponse.json({ message: 'User not found' }, { status: 401 })
 
@@ -79,6 +81,7 @@ export const handlers = [
                 status: user.status,
                 phone: user.phone,
                 gender: user.gender
+                // leaves: user.leaves
             })
                 .setProtectedHeader({ alg: 'HS256' })
                 .setExpirationTime('2h')

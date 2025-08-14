@@ -3,7 +3,7 @@ import Password from 'antd/es/input/Password'
 import React, { useContext, useEffect, useState } from 'react'
 import { BiLock } from 'react-icons/bi'
 import { FaUser } from 'react-icons/fa'
-import { getUsers } from '../api'
+// import { getUsers } from '../api'
 import axios from 'axios'
 import { AuthContext } from '../contexts/AuthContext'
 import { jwtDecode } from 'jwt-decode'
@@ -21,6 +21,12 @@ const Login = () => {
             const res = await axios.post('/api/login', { ...data })
             setToken(res.data.token)
             localStorage.setItem('authToken', res.data.token)
+            setUser(() => {
+                if (token) {
+                    return jwtDecode(token)
+                } else
+                    return null
+            })
             message.success('Login Succesful')
         } catch (error) {
             console.log(error);

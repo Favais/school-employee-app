@@ -12,12 +12,15 @@ const AuthContextProvider = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState(false)
     const [allUsers, setAllUsers] = useState()
     const [leaves, setLeaves] = useState()
+    const [isLoading, setIsLoading] = useState(false)
     const [user, setUser] = useState(() => {
         if (token) {
             return jwtDecode(token)
         } else
             return null
     })
+    console.log(user);
+
 
     const navigate = useNavigate()
     const getAllUsers = async () => {
@@ -27,10 +30,12 @@ const AuthContextProvider = ({ children }) => {
         }
     }
     const getUser = async () => {
-        if (user) {
+        if (token) {
             try {
+                const decodedUser = jwtDecode(token)
+                setUser(decodedUser)
                 setIsAuthenticated(true)
-                if (user && user.role === 'admin') {
+                if (decodedUser && decodedUser.role === 'admin') {
                     setIsAdmin(true)
                 } else {
                     setIsAdmin(false)
@@ -56,16 +61,18 @@ const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         getUser()
 
-    }, [token, user])
+    }, [token])
 
     useEffect(() => {
         getAllUsers()
-    }, [isAdmin, user])
+    }, [isAdmin])
 
 
 
     const value = {
-        token, user, setToken, setUser, navigate, logoutUser, setIsAdmin, isAdmin, allUsers, leaves, setLeaves
+        token, user, setToken, setUser,
+        navigate, logoutUser, setIsAdmin,
+        isAdmin, allUsers, leaves, setLeaves, isLoading, setIsLoading
     }
     return (
         <AuthContext.Provider value={value}>
