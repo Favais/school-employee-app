@@ -12,6 +12,7 @@ const AuthContextProvider = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState(false)
     const [allUsers, setAllUsers] = useState()
     const [leaves, setLeaves] = useState()
+    const [userLeaves, setUserLeaves] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [user, setUser] = useState(() => {
         if (token) {
@@ -19,7 +20,6 @@ const AuthContextProvider = ({ children }) => {
         } else
             return null
     })
-    console.log(user);
 
 
     const navigate = useNavigate()
@@ -49,7 +49,18 @@ const AuthContextProvider = ({ children }) => {
         }
         return null
     }
+    const getUserLeaves = async () => {
+        try {
+            const res = await axios.post('/api/userLeaves', { user })
+            setUserLeaves(res.data);
 
+            // console.log(res.data);
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
     const logoutUser = () => {
         localStorage.removeItem('authToken')
         setToken(null)
@@ -60,8 +71,12 @@ const AuthContextProvider = ({ children }) => {
 
     useEffect(() => {
         getUser()
-
     }, [token])
+
+    useEffect(() => {
+        getUserLeaves()
+    }, [])
+
 
     useEffect(() => {
         getAllUsers()
@@ -72,7 +87,9 @@ const AuthContextProvider = ({ children }) => {
     const value = {
         token, user, setToken, setUser,
         navigate, logoutUser, setIsAdmin,
-        isAdmin, allUsers, leaves, setLeaves, isLoading, setIsLoading
+        isAdmin, allUsers, leaves, setLeaves,
+        isLoading, setIsLoading, userLeaves,
+        setUserLeaves
     }
     return (
         <AuthContext.Provider value={value}>

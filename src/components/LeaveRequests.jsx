@@ -27,9 +27,9 @@ const LeaveRequests = () => {
         try {
             const res = await axios.patch(`/api/leaves/${record.id}`, { status: 'approved' })
             setLeaves((prevLeaves) => (
-                prevLeaves.map((leave) => leave.id === record.id ? { ...leave, status: 'approved' } : leave)
+                prevLeaves.map((leave) => leave._id === record._id ? { ...leave, status: 'approved' } : leave)
             ))
-            message.success(`Leave approved for ${record.staffId}`)
+            message.success(`Leave approved for ${record.firstName} ${record.lastName}`)
         } catch (error) {
             console.log(error);
 
@@ -95,7 +95,23 @@ const LeaveRequests = () => {
                         {tag.status}
                     </Tag>
                 )
-            }
+            },
+            filters: [
+                {
+                    text: 'Pending',
+                    value: 'pending',
+                },
+                {
+                    text: 'Rejected',
+                    value: 'rejected',
+                },
+                {
+                    text: 'Approved',
+                    value: 'approved',
+                },
+            ],
+            onFilter: (value, record) => record.status.indexOf(value) === 0,
+
         },
         {
             title: 'Action',

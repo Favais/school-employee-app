@@ -4,6 +4,7 @@ import { db, leaveRequests } from './db'
 import bcrypt from 'bcryptjs'
 import { useState } from 'react'
 import { message } from 'antd'
+import { ObjectId } from 'bson'
 
 const SECRET = new TextEncoder().encode('sankara') // convert string to Uint8Array
 
@@ -17,12 +18,42 @@ export const handlers = [
         return HttpResponse.json(leaveRequests)
     }),
 
+    http.post('/api/userLeaves', async ({ request }) => {
+        const { user } = await request.json()
+        const userLeaves = leaveRequests.filter((leave) => {
+            return user.leaves.includes(leave._id)
+        })
+        return HttpResponse.json(userLeaves)
+    }),
+
     http.patch('/api/leaves/:id', async ({ params, request }) => {
         const { id } = params;
         const { status } = request.json()
         const updatedLeave = leaveRequests.map(leave => leave.id === id ? { ...leave, status } : leave)
 
         return HttpResponse.json({ message: 'Leave Updated', id, status })
+    }),
+
+    http.post('/api/leaves', async ({ request }) => {
+        const { leaveData, user } = await request.json()
+        const leaveId = new ObjectId().toString();
+        const newLeave = {
+            _id: leaveId,
+            staffId: user.staffId,
+            ...leaveData,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            submittedBy: user.staffId
+        };
+        leaveRequests.push(newLeave)
+
+        const isUser = db.users.find(u => u.staffId === user.staffId);
+        if (isUser) {
+            isUser.leaves.push(leaveId);
+        }
+        console.log(isUser);
+
+        return HttpResponse.json({ message: 'Leave request sent', leaveRequests })
     }),
 
     http.post('/api/employees', async ({ request }) => {
@@ -80,8 +111,8 @@ export const handlers = [
                 department: user.department,
                 status: user.status,
                 phone: user.phone,
-                gender: user.gender
-                // leaves: user.leaves
+                gender: user.gender,
+                leaves: user.leaves
             })
                 .setProtectedHeader({ alg: 'HS256' })
                 .setExpirationTime('2h')
@@ -109,4 +140,5 @@ export const handlers = [
 
         return new HttpResponse('Unauthorized', { status: 401 })
     }),
+
 ]

@@ -1,19 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { Table, Tag } from 'antd'
+import axios from 'axios'
 
 const MyLeaveRequests = () => {
-  const { user } = useContext(AuthContext)
+  const { user, userLeaves, setUserLeaves } = useContext(AuthContext)
 
-  const [userLeaves, setUserLeaves] = useState(user.leaves)
-  console.log(user.leaves);
+
 
   const column = [
-    {
-      title: 'Leave ID',
-      dataIndex: 'leaveId',
-      key: 'leaveId',
-    },
     {
       title: 'Leave Type',
       dataIndex: 'leaveType',
@@ -28,6 +23,11 @@ const MyLeaveRequests = () => {
       title: 'End Date',
       dataIndex: 'endDate',
       key: 'endDate',
+    },
+    {
+      title: 'Reason',
+      dataIndex: 'reason',
+      key: 'reason',
     },
     {
       title: 'Status',
@@ -45,7 +45,7 @@ const MyLeaveRequests = () => {
   ]
   return (
     <div>
-      <Table columns={column} dataSource={userLeaves} />
+      <Table key={userLeaves.id} columns={column} dataSource={userLeaves} />
     </div>
   )
 }

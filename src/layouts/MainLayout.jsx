@@ -13,6 +13,7 @@ import logo from "../assets/afriklogo.png"
 import { AuthContext } from '../contexts/AuthContext';
 import { BiLogOut } from 'react-icons/bi';
 import NewEmployee from '../components/NewEmployee';
+import LeaveForm from '../components/LeaveForm';
 
 
 
@@ -79,11 +80,29 @@ const MainLayout = () => {
             case '/dashboard':
                 return <h2>Dashboard</h2>
             case '/leaves':
-                return <h2>Leave Management</h2>
+                if (user.role === 'employee') {
+                    return <div className='flex items-center justify-between w-full px-4'>
+                        <h2>Leave Management</h2>
+                        <Button onClick={showDrawer} style={{ backgroundColor: 'darkgreen', color: 'white' }} size="large">
+                            Request Leave
+                        </Button>
+                    </div>
+                }
             default:
                 return <h2>School Management</h2>
         }
     }
+
+    const getDrawerContent = () => {
+        if (location.pathname === '/employees') {
+            return <NewEmployee onClose={onClose} open={open} />;
+        }
+        if (location.pathname === '/leaves') {
+            return <LeaveForm onClose={onClose} open={open} />;
+        }
+        return null;
+    };
+
 
     return (
         <Layout className='h-screen '>
@@ -137,7 +156,7 @@ const MainLayout = () => {
                     <Outlet />
                 </Content>
             </Layout>
-            <NewEmployee onClose={onClose} open={open} />
+            {getDrawerContent()}
         </Layout>
 
         // <div className='flex'>
