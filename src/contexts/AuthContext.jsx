@@ -82,6 +82,21 @@ const AuthContextProvider = ({ children }) => {
         getAllUsers()
     }, [isAdmin])
 
+    useEffect(() => {
+        const getLeaves = async () => {
+
+            try {
+                const res = await axios.get('/api/leaves')
+                setLeaves(res.data)
+                console.log(res);
+
+            } catch (error) {
+
+            }
+
+        }
+        getLeaves()
+    }, [])
 
 
     const value = {

@@ -9,10 +9,10 @@ const Leaves = () => {
     const { isAdmin } = useContext(AuthContext)
 
     if (isAdmin) {
-        return <LeaveRequests />
+        return <div className='p-4'><LeaveRequests /></div>
     }
     return (
-        <div>
+        <div className='p-4'>
             <MyLeaveRequests />
         </div>
     )

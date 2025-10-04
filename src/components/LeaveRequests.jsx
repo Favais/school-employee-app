@@ -10,18 +10,7 @@ import { Link } from 'react-router-dom';
 const LeaveRequests = () => {
     const { leaves, setLeaves } = useContext(AuthContext)
     const { message } = App.useApp()
-    const getLeaves = async () => {
 
-        try {
-            const res = await axios.get('/api/leaves')
-            await setLeaves(res.data)
-            console.log(res);
-
-        } catch (error) {
-
-        }
-
-    }
     const handleApprove = async (record) => {
 
         try {
@@ -49,14 +38,7 @@ const LeaveRequests = () => {
         }
     }
 
-    useEffect(() => {
-        getLeaves()
-    }, [])
 
-
-    useEffect(() => {
-
-    }, [leaves])
     const column = [
         {
             title: 'Staff ID',
