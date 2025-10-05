@@ -1,5 +1,5 @@
 import React from 'react'
-import SummaryCards from '../components/summaryCards'
+import SummaryCards from '../components/SummaryCards'
 import LeaveRequestChart from '../components/LeaveRequestChart'
 
 const Dashboard = () => {
